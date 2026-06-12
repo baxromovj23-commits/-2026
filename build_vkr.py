@@ -17,37 +17,44 @@ d = DocxBuilder()
 #  ТИТУЛЬНЫЙ ЛИСТ
 # ======================================================================
 def title_page():
-    d.para("МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ", center=True, bold=True, size=26, indent=False)
-    d.para("Высшее учебное заведение", center=True, size=24, indent=False)
-    d.para("Факультет биотехнологии и молекулярной биологии", center=True, size=24, indent=False)
-    d.para("Кафедра молекулярной генетики и биоинженерии", center=True, size=24, indent=False)
-    for _ in range(6):
+    d.para("МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ",
+           center=True, bold=True, size=24, indent=False)
+    d.para("Федеральное государственное бюджетное образовательное учреждение "
+           "высшего образования", center=True, size=22, indent=False)
+    d.para("«Российский химико-технологический университет "
+           "имени Д. И. Менделеева»", center=True, bold=True, size=24, indent=False)
+    d.para("(РХТУ им. Д. И. Менделеева)", center=True, size=22, indent=False)
+    d.para("", center=True, indent=False)
+    d.para("Факультет ______________________________________",
+           center=True, size=22, indent=False)
+    d.para("Кафедра ______________________________________",
+           center=True, size=22, indent=False)
+    for _ in range(4):
         d.para("", center=True, indent=False)
     d.para("ВЫПУСКНАЯ КВАЛИФИКАЦИОННАЯ РАБОТА", center=True, bold=True, size=30, indent=False)
     d.para("", center=True, indent=False)
     d.para("на тему:", center=True, size=26, indent=False)
-    d.para("«Синтез олигонуклеотидов фосфорамидитным методом "
-           "и анализ экспрессии гена TOP2A человека методом "
-           "полимеразной цепной реакции»",
+    d.para("«Синтез олигонуклеотидов для изучения экспрессии человеческого "
+           "гена TOP2 методом полимеразной цепной реакции»",
            center=True, bold=True, size=28, indent=False)
     for _ in range(5):
         d.para("", center=True, indent=False)
-    # блок «Выполнил/Научный руководитель» — выровнен вправо имитацией
-    d.para([("Выполнил(а): студент(ка) выпускного курса", {'size': 24})],
+    # блок «Выполнил/Научный руководитель»
+    d.para([("Выполнил: обучающийся выпускного курса", {'size': 24})],
            justify=False, indent=False)
-    d.para([("____________________________ / Ф.И.О. /", {'size': 24})],
+    d.para([("Бахромов Жавохир Орифжонович  ____________", {'size': 24})],
            justify=False, indent=False)
     d.para("", indent=False)
     d.para([("Научный руководитель:", {'size': 24})], justify=False, indent=False)
-    d.para([("к.б.н., доцент ____________ / Ф.И.О. /", {'size': 24})],
-           justify=False, indent=False)
+    d.para([("канд. хим. наук  Соловьева Инна Николаевна  ____________",
+             {'size': 24})], justify=False, indent=False)
     d.para("", indent=False)
     d.para([("Работа допущена к защите", {'size': 24})], justify=False, indent=False)
     d.para([("Заведующий кафедрой ____________ / Ф.И.О. /", {'size': 24})],
            justify=False, indent=False)
     for _ in range(4):
         d.para("", center=True, indent=False)
-    d.para("Город — 2026", center=True, size=24, indent=False)
+    d.para("Москва — 2026", center=True, size=24, indent=False)
     d.page_break()
 
 
