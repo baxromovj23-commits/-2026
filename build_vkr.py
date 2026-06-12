@@ -25,10 +25,10 @@ def title_page():
            "имени Д. И. Менделеева»", center=True, bold=True, size=24, indent=False)
     d.para("(РХТУ им. Д. И. Менделеева)", center=True, size=22, indent=False)
     d.para("", center=True, indent=False)
-    d.para("Факультет ______________________________________",
+    d.para("Направление подготовки 18.03.01 — Химическая технология",
            center=True, size=22, indent=False)
-    d.para("Кафедра ______________________________________",
-           center=True, size=22, indent=False)
+    d.para("Направленность (профиль) «Химическая технология "
+           "лекарственных препаратов»", center=True, size=22, indent=False)
     for _ in range(4):
         d.para("", center=True, indent=False)
     d.para("ВЫПУСКНАЯ КВАЛИФИКАЦИОННАЯ РАБОТА", center=True, bold=True, size=30, indent=False)
