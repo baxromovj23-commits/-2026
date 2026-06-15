@@ -485,6 +485,85 @@ def build_res2_slide():
 
 
 # ======================================================================
+#  СХЕМА ОТЖИГА ПРАЙМЕРОВ  (рисунок для слайда «Термодинамический анализ»)
+# ======================================================================
+def arrow_box(sid, prst, x, y, cx, cy, fill, label):
+    p = para([run(label, sz=1100, b=True, color="FFFFFF")], algn='ctr', after=0)
+    return (
+        '<p:sp><p:nvSpPr><p:cNvPr id="%d" name="primer"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>'
+        '<p:spPr><a:xfrm><a:off x="%d" y="%d"/><a:ext cx="%d" cy="%d"/></a:xfrm>'
+        '<a:prstGeom prst="%s"><a:avLst><a:gd name="adj1" fmla="val 50000"/>'
+        '<a:gd name="adj2" fmla="val 40000"/></a:avLst></a:prstGeom>'
+        '<a:solidFill><a:srgbClr val="%s"/></a:solidFill></p:spPr>'
+        '<p:txBody><a:bodyPr wrap="square" anchor="ctr" lIns="36576" rIns="36576" '
+        'tIns="9144" bIns="9144"><a:normAutofit/></a:bodyPr><a:lstStyle/>%s</p:txBody></p:sp>'
+        % (sid, x, y, cx, cy, prst, fill, p))
+
+
+def rect_bar(sid, x, y, cx, cy, fill, label, txtcolor):
+    p = para([run(label, sz=1300, b=True, color=txtcolor)], algn='ctr', after=0)
+    return (
+        '<p:sp><p:nvSpPr><p:cNvPr id="%d" name="template"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>'
+        '<p:spPr><a:xfrm><a:off x="%d" y="%d"/><a:ext cx="%d" cy="%d"/></a:xfrm>'
+        '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom>'
+        '<a:solidFill><a:srgbClr val="%s"/></a:solidFill>'
+        '<a:ln w="9525"><a:solidFill><a:srgbClr val="A6A6A6"/></a:solidFill></a:ln></p:spPr>'
+        '<p:txBody><a:bodyPr wrap="square" anchor="ctr"><a:normAutofit/></a:bodyPr>'
+        '<a:lstStyle/>%s</p:txBody></p:sp>' % (sid, x, y, cx, cy, fill, p))
+
+
+def double_arrow(sid, x1, x2, y, color, w):
+    return (
+        '<p:cxnSp><p:nvCxnSpPr><p:cNvPr id="%d" name="amplicon"/><p:cNvCxnSpPr/>'
+        '<p:nvPr/></p:nvCxnSpPr><p:spPr><a:xfrm><a:off x="%d" y="%d"/>'
+        '<a:ext cx="%d" cy="1"/></a:xfrm><a:prstGeom prst="line"><a:avLst/></a:prstGeom>'
+        '<a:ln w="%d"><a:solidFill><a:srgbClr val="%s"/></a:solidFill>'
+        '<a:headEnd type="triangle" w="med" len="med"/>'
+        '<a:tailEnd type="triangle" w="med" len="med"/></a:ln></p:spPr></p:cxnSp>'
+        % (sid, x1, y, x2 - x1, w, color))
+
+
+def build_primer_diagram():
+    """Схема отжига праймеров на матрице гена TOP2A (стиль SnapGene)."""
+    xf, wf = 2400000, 2100000      # прямой праймер
+    xr, wr = 7700000, 2100000      # обратный праймер
+    amp_l, amp_r = 2400000, xr + wr  # размах ампликона
+    sh = ''
+    # подпись ампликона
+    sh += textbox(210, amp_l, 4460000, amp_r - amp_l, 340000,
+                  [para([run("Ампликон \u2248 150 п.н.", sz=1400, b=True, color=DARK)],
+                        algn='ctr', after=0)], anchor='b', name="ампликон-подпись")
+    # двунаправленная стрелка размаха
+    sh += double_arrow(211, amp_l, amp_r, 4860000, DARK, 22225)
+    # прямой праймер (вправо)
+    sh += arrow_box(212, "rightArrow", xf, 5000000, wf, 300000, BLUE,
+                    "Forward (прямой) \u2192")
+    # матрица — ген
+    sh += rect_bar(213, 900000, 5380000, 10400000, 300000, "D9D9D9",
+                   "Матрица \u2014 ген TOP2A (экзонный стык)", "1F1F1F")
+    # обратный праймер (влево)
+    sh += arrow_box(214, "leftArrow", xr, 5760000, wr, 300000, TEAL,
+                    "\u2190 Reverse (обратный)")
+    # полярность цепей
+    sh += textbox(215, 560000, 5380000, 320000, 300000,
+                  [para([run("5\u2032", sz=1100, b=True, color="595959")], algn='ctr', after=0)],
+                  anchor='ctr', name="5prime")
+    sh += textbox(216, 11320000, 5380000, 340000, 300000,
+                  [para([run("3\u2032", sz=1100, b=True, color="595959")], algn='ctr', after=0)],
+                  anchor='ctr', name="3prime")
+    # подпись рисунка
+    sh += textbox(217, 900000, 6060000, 10400000, 320000,
+                  [para([run("Схема отжига праймеров на матрице "
+                             "(визуализация в SnapGene)", sz=1200, i=True, color="595959")],
+                        algn='ctr', after=0)], anchor='t', name="рис-подпись")
+    return sh
+
+
+def inject_primer_diagram(slide_xml_text):
+    return slide_xml_text.replace('</p:spTree>', build_primer_diagram() + '</p:spTree>', 1)
+
+
+# ======================================================================
 #  Заметки к титульному слайду — вступительная речь
 # ======================================================================
 SPEECH = [
@@ -527,6 +606,9 @@ parts["ppt/slides/slide12.xml"] = build_importance_2().encode('utf-8')
 parts["ppt/slides/slide13.xml"] = build_qc_slide().encode('utf-8')
 parts["ppt/slides/slide14.xml"] = build_res1_slide().encode('utf-8')
 parts["ppt/slides/slide15.xml"] = build_res2_slide().encode('utf-8')
+
+# слайд «Термодинамический анализ праймеров» — добавляем схему отжига
+parts["ppt/slides/slide5.xml"] = inject_primer_diagram(text("ppt/slides/slide5.xml")).encode('utf-8')
 
 # 2) изображения в media
 parts["ppt/media/imageGel1.jpg"] = parts.pop("__gel1")
