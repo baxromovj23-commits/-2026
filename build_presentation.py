@@ -610,6 +610,26 @@ parts["ppt/slides/slide15.xml"] = build_res2_slide().encode('utf-8')
 # слайд «Термодинамический анализ праймеров» — добавляем схему отжига
 parts["ppt/slides/slide5.xml"] = inject_primer_diagram(text("ppt/slides/slide5.xml")).encode('utf-8')
 
+# --- слайды реакций: убираем английский, всё на русский ---
+s7 = text("ppt/slides/slide7.xml")
+old_src = ('<a:r><a:rPr lang="en-US" altLang="ru-RU" sz="1400">' + TNR +
+           '</a:rPr><a:t>https://atdbio.com/nucleic-acids-book/'
+           'Solid-phase-oligonucleotide-synthesis</a:t></a:r>')
+new_src = ('<a:r><a:rPr lang="ru-RU" altLang="en-US" sz="1400">' + TNR +
+           '</a:rPr><a:t>Твердофазный фосфорамидитный синтез '
+           'олигонуклеотидов</a:t></a:r>')
+assert old_src in s7, "не найдена строка источника на slide7"
+s7 = s7.replace(old_src, new_src)
+s7 = s7.replace("(DMTO)", "(ДМТ)")
+s7 = s7.replace("Детрилирование", "Детритилирование")
+s7 = s7.replace("Кэппинг", "Кэпирование")
+parts["ppt/slides/slide7.xml"] = s7.encode('utf-8')
+
+s8 = text("ppt/slides/slide8.xml")
+s8 = s8.replace("Механизм детрилирования", "Механизм детритилирования")
+s8 = s8.replace("DMT-группы", "ДМТ-группы")
+parts["ppt/slides/slide8.xml"] = s8.encode('utf-8')
+
 # 2) изображения в media
 parts["ppt/media/imageGel1.jpg"] = parts.pop("__gel1")
 parts["ppt/media/imageGel2.jpg"] = parts.pop("__gel2")
